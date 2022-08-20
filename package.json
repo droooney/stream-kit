@@ -2,17 +2,32 @@
   "name": "stream-kit",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "client:start": "ts-node-dev client/index.ts"
+  },
   "devDependencies": {
+    "@types/koa": "^2.13.5",
+    "@types/koa__router": "^8.0.11",
+    "@types/koa-bodyparser": "^4.3.7",
+    "@types/koa-mount": "^4.0.1",
+    "@types/koa-static": "^4.0.2",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
     "eslint": "^8.22.0",
     "eslint-plugin-import-helpers": "^1.2.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "ts-node": "^10.9.1"
+    "@koa/router": "^12.0.0",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "ws": "^8.8.1"
   }
 }
