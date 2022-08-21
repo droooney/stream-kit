@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start:dev": "npm-run-all -p client:start:dev server:start:dev",
-    "client:start:dev": "ts-node-dev client/index.ts",
-    "server:start:dev": "ts-node-dev server/index.ts"
+    "start": "npm-run-all -p client:start server:start",
+    "start:prod": "NODE_ENV=production npm run start",
+    "client:start": "ts-node-dev client/index.ts",
+    "client:start:prod": "NODE_ENV=production npm run client:start",
+    "server:start": "ts-node-dev server/index.ts",
+    "server:start:prod": "NODE_ENV=production npm run server:start"
   },
   "devDependencies": {
     "@types/koa": "^2.13.5",
