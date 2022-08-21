@@ -4,11 +4,11 @@
   "description": "",
   "scripts": {
     "start": "npm-run-all -p client:start server:start",
-    "start:prod": "NODE_ENV=production npm run start",
+    "start:prod": "npm-run-all -p client:start:prod server:start:prod",
     "client:start": "ts-node-dev client/index.ts",
-    "client:start:prod": "NODE_ENV=production npm run client:start",
+    "client:start:prod": "NODE_ENV=production ts-node client/index.ts",
     "server:start": "ts-node-dev server/index.ts",
-    "server:start:prod": "NODE_ENV=production npm run server:start"
+    "server:start:prod": "NODE_ENV=production ts-node server/index.ts"
   },
   "devDependencies": {
     "@types/koa": "^2.13.5",
