@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     "target": "esnext",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -8,11 +8,6 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "strict": true
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
   },
   "exclude": [
     "node_modules"

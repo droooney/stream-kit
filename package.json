@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "client:start": "ts-node-dev client/index.ts"
+    "start:dev": "npm-run-all -p client:start:dev server:start:dev",
+    "client:start:dev": "ts-node-dev client/index.ts",
+    "server:start:dev": "ts-node-dev server/index.ts"
   },
   "devDependencies": {
     "@types/koa": "^2.13.5",
@@ -11,6 +13,7 @@
     "@types/koa-bodyparser": "^4.3.7",
     "@types/koa-mount": "^4.0.1",
     "@types/koa-static": "^4.0.2",
+    "@types/pino": "^6.3.12",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
@@ -23,11 +26,15 @@
   },
   "dependencies": {
     "@koa/router": "^12.0.0",
+    "colors": "^1.4.0",
+    "dayjs": "^1.11.5",
+    "dotenv": "^16.0.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "ts-node": "^10.9.1",
+    "twitch-js": "^2.0.0-beta.43",
     "ws": "^8.8.1"
   }
 }

@@ -1,21 +1,17 @@
 import '../utilities/importEnv';
 
-import path from 'node:path';
-
 import bodyParser from 'koa-bodyparser';
-import mount from 'koa-mount';
-import serve from 'koa-static';
 
 import app from './app';
 import server from './server';
-import routes from './routes';
 import ws from './ws';
+import { connect } from './twitch';
 
-const PORT = 3883;
+const PORT = 8338;
 
-app.use(mount('/public', serve(path.resolve('./client/public'))));
+connect();
+
 app.use(bodyParser());
-app.use(mount('/api', routes.routes()));
 
 ws.on('connection', () => {
   console.log('socked connected');
