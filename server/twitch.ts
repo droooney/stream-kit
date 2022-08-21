@@ -1,7 +1,6 @@
-import TwitchJs, { JoinMessage, PartMessage, PrivateMessages } from 'twitch-js';
+import TwitchJs from 'twitch-js';
 import colors from 'colors';
-
-import { formatDate } from '../utilities/date';
+import dayjs from 'dayjs';
 
 const { BOT_NAME, CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } = process.env;
 
@@ -31,15 +30,17 @@ export async function connect(): Promise<void> {
   })());
 
   chat.on('JOIN', (event) => {
-    console.log(formatJoinEvent(event));
+    console.log(`${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} joined the chat`);
   });
 
   chat.on('PART', (event) => {
-    console.log(formatLeaveEvent(event));
+    console.log(`${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} left the chat`);
   });
 
   chat.on('PRIVMSG', (event) => {
-    console.log(formatMessageEvent(event));
+    console.log(
+      `${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} wrote ${formatMessage(event.message)}`,
+    );
   });
 
   // await sendMessage('test');
@@ -51,20 +52,14 @@ export async function sendMessage(message: string): Promise<void> {
   await chat.say(channelName, message);
 }
 
-function formatJoinEvent(event: JoinMessage): string {
-  return `${colors.bold(colors.green(formatDate(event.timestamp)))}: ${colors.bold(
-    colors.red(event.username),
-  )} joined the chat`;
+function formatTimestamp(timestamp: Date): string {
+  return colors.bold(colors.green(`[${dayjs(timestamp).format('DD.MM.YYYY HH:mm:ss')}]`));
 }
 
-function formatLeaveEvent(event: PartMessage): string {
-  return `${colors.bold(colors.green(formatDate(event.timestamp)))}: ${colors.bold(
-    colors.red(event.username),
-  )} left the chat`;
+function formatUsername(username: string): string {
+  return colors.bold(colors.red(username));
 }
 
-function formatMessageEvent(event: PrivateMessages): string {
-  return `${colors.bold(colors.green(formatDate(event.timestamp)))}: ${colors.bold(
-    colors.red(event.username),
-  )} wrote ${colors.bold(colors.blue(event.message))}`;
+function formatMessage(message: string): string {
+  return colors.bold(colors.blue(message));
 }
