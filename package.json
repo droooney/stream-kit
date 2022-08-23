@@ -8,7 +8,8 @@
     "client:start": "ts-node-dev client/index.ts",
     "client:start:prod": "NODE_ENV=production ts-node client/index.ts",
     "server:start": "ts-node-dev server/index.ts",
-    "server:start:prod": "NODE_ENV=production ts-node server/index.ts"
+    "server:start:prod": "NODE_ENV=production ts-node server/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/koa": "^2.13.5",
@@ -17,7 +18,6 @@
     "@types/koa-mount": "^4.0.1",
     "@types/koa-static": "^4.0.2",
     "@types/pino": "^6.3.12",
-    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
     "eslint": "^8.22.0",
@@ -36,8 +36,9 @@
     "koa-bodyparser": "^4.3.0",
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
+    "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.1",
     "ts-node": "^10.9.1",
-    "twitch-js": "^2.0.0-beta.43",
-    "ws": "^8.8.1"
+    "twitch-js": "^2.0.0-beta.43"
   }
 }

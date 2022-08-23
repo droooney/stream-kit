@@ -1,15 +1,13 @@
-import { WebSocketServer } from 'ws';
+import { Server } from 'socket.io';
+
+import { ClientEvents, ServerEvents } from './types/sockets';
+
+import WebSocketNamespace from '../utilities/WebSocketNamespace';
 
 import server from './server';
 
-const wsServer = new WebSocketServer({
-  server,
-});
+export const wsServer = new Server(server);
+
+export const rootNs = new WebSocketNamespace<ClientEvents, ServerEvents>(wsServer.of('/'));
 
 export default wsServer;
-
-export function sendToAllClients(message: string) {
-  for (const socket of wsServer.clients) {
-    socket.send(message);
-  }
-}

@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Index</title>
+  <script src="/socket.io/socket.io.min.js"></script>
 </head>
 <body>
 <script>
-  const ws = new WebSocket('ws://localhost:3883');
+  const socket = io('/');
 
-  ws.addEventListener('open', () => {
+  socket.on('connect', () => {
     const url = new URL('https://music.yandex.ru/radio');
     const win = window.open(url);
 
-    ws.addEventListener('message', ({data}) => {
-      win.postMessage(data, url.origin);
+    socket.on('startMusic', () => {
+      win.postMessage('startMusic', url.origin);
+    });
+
+    socket.on('stopMusic', () => {
+      win.postMessage('stopMusic', url.origin);
     });
   });
 </script>
