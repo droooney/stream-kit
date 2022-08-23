@@ -1,6 +1,6 @@
 export interface Command {
   permissions: PermissionsType;
-  response: string | ((variables: Variables) => Promise<string> | string);
+  response: (variables: Variables) => Promise<string> | string;
 }
 
 export enum PermissionsType {

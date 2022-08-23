@@ -20,7 +20,7 @@ export const COMMANDS: Partial<Record<string, Command>> = {
   },
   '!mods': {
     permissions: PermissionsType.ANY,
-    response: 'Megabase mods used: https://steamcommunity.com/sharedfiles/filedetails/?id=2830767656',
+    response: () => 'Megabase mods used: https://steamcommunity.com/sharedfiles/filedetails/?id=2830767656',
   },
   '!song': {
     permissions: PermissionsType.ANY,
