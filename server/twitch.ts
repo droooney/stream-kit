@@ -2,6 +2,11 @@ import TwitchJs from 'twitch-js';
 import colors from 'colors';
 import dayjs from 'dayjs';
 
+import { PermissionsType } from './types/twitch';
+
+import { COMMANDS } from './commands';
+import { variables } from './variables';
+
 const { BOT_NAME, CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } = process.env;
 
 const channelName = CHANNEL_NAME ?? 'wineclown';
@@ -37,10 +42,31 @@ export async function connect(): Promise<void> {
     console.log(`${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} left the chat`);
   });
 
-  chat.on('PRIVMSG', (event) => {
+  chat.on('PRIVMSG', async (event) => {
     console.log(
       `${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} wrote ${formatMessage(event.message)}`,
     );
+
+    if (!event.isSelf) {
+      const words = event.message.split(/\s+/);
+      const commandString = words.find((word) => COMMANDS[word]);
+      const permissions =
+        event.username === CHANNEL_NAME
+          ? PermissionsType.OWNER
+          : 'mod' in event.tags && event.tags.mod === '1'
+          ? PermissionsType.MODERATOR
+          : PermissionsType.ANY;
+
+      if (commandString) {
+        const command = COMMANDS[commandString];
+
+        if (command && permissions >= command.permissions) {
+          const response = await command.response(variables);
+
+          await sendMessage(response);
+        }
+      }
+    }
   });
 
   // await sendMessage('test');

@@ -11,7 +11,7 @@ const DEFAULTS: Variables = {
   deaths: 0,
 };
 
-const variables = getVariables();
+export const variables = getVariables();
 
 export function getVariables(): Variables {
   let jsonVariables: Partial<Variables>;

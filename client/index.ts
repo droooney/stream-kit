@@ -10,12 +10,13 @@ import app from './app';
 import server from './server';
 import routes from './routes';
 
-const PORT = 3883;
+const { CLIENT_PORT } = process.env;
+const port = Number(CLIENT_PORT);
 
 app.use(mount('/public', serve(path.resolve('./client/public'))));
 app.use(bodyParser());
 app.use(mount('/api', routes.routes()));
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Listening on http://localhost:${PORT}...`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Listening on http://localhost:${port}...`);
 });

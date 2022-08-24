@@ -13,6 +13,10 @@
     const url = new URL('https://music.yandex.ru/radio');
     const win = window.open(url);
 
+    socket.on('getCurrentSong', () => {
+      win.postMessage('getCurrentSong', url.origin);
+    });
+
     socket.on('startMusic', () => {
       win.postMessage('startMusic', url.origin);
     });
@@ -20,6 +24,20 @@
     socket.on('stopMusic', () => {
       win.postMessage('stopMusic', url.origin);
     });
+
+    window.addEventListener('message', ({ data }) => {
+      try {
+        const parsed = JSON.parse(data);
+
+        if (parsed.type === 'getCurrentSong') {
+          socket.emit('getCurrentSong', parsed.value);
+        }
+      } catch {}
+    });
+
+    setTimeout(() => {
+      win.postMessage('getCurrentSong', url.origin);
+    }, 10000);
   });
 </script>
 </body>

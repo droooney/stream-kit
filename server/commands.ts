@@ -29,7 +29,7 @@ export const COMMANDS: Partial<Record<string, Command>> = {
 
       const song = await rootNs.waitForEvent('getCurrentSong');
 
-      return `Current song: ${song}`;
+      return `Current song: "${song}"`;
     },
   },
 };

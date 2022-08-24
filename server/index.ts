@@ -7,7 +7,8 @@ import server from './server';
 import ws from './ws';
 import { connect } from './twitch';
 
-const PORT = 8338;
+const { SERVER_PORT } = process.env;
+const port = Number(SERVER_PORT);
 
 connect();
 
@@ -17,6 +18,6 @@ ws.on('connection', () => {
   console.log('socked connected');
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Listening on http://localhost:${PORT}...`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Listening on http://localhost:${port}...`);
 });
