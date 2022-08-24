@@ -1,4 +1,5 @@
 import { Namespace } from 'socket.io';
+import { forEach } from 'lodash';
 
 export type EventMap<Event extends string> = Record<Event, (() => any) | ((data: any) => any)>;
 
@@ -8,6 +9,14 @@ export default class WebSocketNamespace<ListenEvents extends EventMap<never>, Em
 
   constructor(namespace: Namespace<ListenEvents, EmitEvents>) {
     this.namespace = namespace;
+
+    this.namespace.on('connection', (socket) => {
+      forEach(this.listeners, (listeners, event) => {
+        listeners?.forEach((listener) => {
+          socket.on(event as any, listener);
+        });
+      });
+    });
   }
 
   emit<E extends keyof EmitEvents & string>(
@@ -23,6 +32,8 @@ export default class WebSocketNamespace<ListenEvents extends EventMap<never>, Em
     sockets.forEach((socket) => {
       socket.on(event, listener as any);
     });
+
+    (this.listeners[event] ||= new Set())?.add(listener);
 
     return () => {
       sockets.forEach((socket) => {

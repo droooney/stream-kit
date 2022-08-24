@@ -3,4 +3,4 @@
 node_modules
 
 *.env
-server/variables.json
+server/db/variables.json

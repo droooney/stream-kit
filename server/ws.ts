@@ -9,5 +9,3 @@ import server from './server';
 export const wsServer = new Server(server);
 
 export const rootNs = new WebSocketNamespace<ClientEvents, ServerEvents>(wsServer.of('/'));
-
-export default wsServer;

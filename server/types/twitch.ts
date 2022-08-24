@@ -1,6 +1,8 @@
+import { MaybePromise } from '../../types';
+
 export interface Command {
   permissions: PermissionsType;
-  response: (variables: Variables) => Promise<string> | string;
+  response: () => MaybePromise<string | null | undefined>;
 }
 
 export enum PermissionsType {

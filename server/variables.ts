@@ -4,14 +4,14 @@ import { promisify } from 'node:util';
 
 import { Variables } from './types/twitch';
 
-const filename = path.resolve('./server/variables.json');
+const filename = path.resolve('./server/db/variables.json');
 const writeFile = promisify(fs.writeFile);
 
 const DEFAULTS: Variables = {
   deaths: 0,
 };
 
-export const variables = getVariables();
+const variables = getVariables();
 
 export function getVariables(): Variables {
   let jsonVariables: Partial<Variables>;

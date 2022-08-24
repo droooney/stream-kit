@@ -15,13 +15,3 @@ export const wsServer = new Server(server);
 export const rootNs = new WebSocketNamespace<LocalClientEvents, LocalServerEvents>(wsServer.of('/'));
 
 export const wsClient: Socket<RemoteServerEvents, RemoteClientEvents> = io(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
-
-wsClient.on('getCurrentSong', async () => {
-  rootNs.emit('getCurrentSong');
-
-  const song = await rootNs.waitForEvent('getCurrentSong');
-
-  wsClient.emit('getCurrentSong', song);
-});
-
-export default wsServer;

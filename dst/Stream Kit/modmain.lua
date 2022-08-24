@@ -13,6 +13,7 @@ local bosses = {
   "stalker",
   "toadstool",
 }
+local apiPath = "http://localhost:3883/api"
 
 local bossesTimeouts = {
   alterguardian_phase1 = 15,
@@ -35,14 +36,14 @@ end
 function startBossMusic(bossName)
   playingMusic = true
 
-  GLOBAL.TheSim:QueryServer("http://localhost:3883/api/startBoss?bossName=" .. bossName, function () end, "POST", "{}")
+  GLOBAL.TheSim:QueryServer(apiPath .. "/startBoss?bossName=" .. bossName, function () end, "POST", "{}")
   GLOBAL.TheMixer:SetLevel("set_music", 0.2)
 end
 
 function stopBossMusic(bossName)
   playingMusic = false
 
-  GLOBAL.TheSim:QueryServer("http://localhost:3883/api/endBoss?bossName=" .. bossName, function () end, "POST", "{}")
+  GLOBAL.TheSim:QueryServer(apiPath .. "/api/endBoss?bossName=" .. bossName, function () end, "POST", "{}")
   GLOBAL.TheMixer:SetLevel("set_music", 0)
 end
 
@@ -65,5 +66,21 @@ AddPlayerPostInit(function (inst)
     stopMusicTask = inst:DoTaskInTime(bossesTimeouts[bossName] or 3, function ()
       stopBossMusic(bossName)
     end)
+  end)
+end)
+
+AddPrefabPostInit("player_classified", function (inst)
+  local wasDead = inst.isghostmode:value()
+
+  print("init dead", wasDead)
+
+  inst:ListenForEvent("isghostmodedirty", function ()
+    local isDead = inst.isghostmode:value()
+
+    if isDead and not wasDead then
+      GLOBAL.TheSim:QueryServer(apiPath .. "/addDeath", function () end, "POST", "{}")
+    end
+
+    wasDead = isDead
   end)
 end)

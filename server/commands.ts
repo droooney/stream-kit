@@ -1,6 +1,7 @@
 import { Command, PermissionsType } from './types/twitch';
 
 import { rootNs } from './ws';
+import { getVariable, setVariable } from './variables';
 
 export const COMMANDS: Partial<Record<string, Command>> = {
   '!commands': {
@@ -16,7 +17,23 @@ export const COMMANDS: Partial<Record<string, Command>> = {
   },
   '!deaths': {
     permissions: PermissionsType.ANY,
-    response: ({ deaths }) => `Since Aug 23 2022 wineclown has died ${deaths} times on stream`,
+    response: () => `Since Aug 23 2022 wineclown has died ${getVariable('deaths')} times on stream`,
+  },
+  '!adddeath': {
+    permissions: PermissionsType.MODERATOR,
+    response: async () => {
+      await setVariable('deaths', getVariable('deaths') + 1);
+
+      return COMMANDS['!deaths']?.response();
+    },
+  },
+  '!removedeath': {
+    permissions: PermissionsType.MODERATOR,
+    response: async () => {
+      await setVariable('deaths', Math.max(0, getVariable('deaths') - 1));
+
+      return COMMANDS['!deaths']?.response();
+    },
   },
   '!mods': {
     permissions: PermissionsType.ANY,

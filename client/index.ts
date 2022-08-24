@@ -9,6 +9,7 @@ import serve from 'koa-static';
 import app from './app';
 import server from './server';
 import routes from './routes';
+import { rootNs, wsClient } from './ws';
 
 const { CLIENT_PORT } = process.env;
 const port = Number(CLIENT_PORT);
@@ -19,4 +20,12 @@ app.use(mount('/api', routes.routes()));
 
 server.listen(port, '0.0.0.0', () => {
   console.log(`Listening on http://localhost:${port}...`);
+});
+
+wsClient.on('getCurrentSong', async () => {
+  rootNs.emit('getCurrentSong');
+
+  const song = await rootNs.waitForEvent('getCurrentSong');
+
+  wsClient.emit('getCurrentSong', song);
 });

@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import { PermissionsType } from './types/twitch';
 
 import { COMMANDS } from './commands';
-import { variables } from './variables';
 
 const { BOT_NAME, CHANNEL_NAME, CLIENT_ID, CLIENT_TOKEN } = process.env;
 
@@ -47,25 +46,33 @@ export async function connect(): Promise<void> {
       `${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} wrote ${formatMessage(event.message)}`,
     );
 
-    if (!event.isSelf) {
-      const words = event.message.split(/\s+/);
-      const commandString = words.find((word) => COMMANDS[word]);
-      const permissions =
-        event.username === CHANNEL_NAME
-          ? PermissionsType.OWNER
-          : 'mod' in event.tags && event.tags.mod === '1'
-          ? PermissionsType.MODERATOR
-          : PermissionsType.ANY;
+    if (event.isSelf) {
+      return;
+    }
 
-      if (commandString) {
-        const command = COMMANDS[commandString];
+    const words = event.message.split(/\s+/);
+    const commandString = words.find((word) => COMMANDS[word]);
+    const permissions =
+      event.username === CHANNEL_NAME
+        ? PermissionsType.OWNER
+        : 'mod' in event.tags && event.tags.mod === '1'
+        ? PermissionsType.MODERATOR
+        : PermissionsType.ANY;
 
-        if (command && permissions >= command.permissions) {
-          const response = await command.response(variables);
+    if (!commandString) {
+      return;
+    }
 
-          await sendMessage(response);
-        }
-      }
+    const command = COMMANDS[commandString];
+
+    if (!command || permissions < command.permissions) {
+      return;
+    }
+
+    const response = await command.response();
+
+    if (response) {
+      await sendMessage(response);
     }
   });
 

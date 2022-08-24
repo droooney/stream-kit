@@ -1,4 +1,5 @@
 export interface ClientEvents {
+  addDeath(): void;
   getCurrentSong(song: string): void;
 }
 
