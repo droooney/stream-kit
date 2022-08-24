@@ -46,10 +46,6 @@ export async function connect(): Promise<void> {
       `${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} wrote ${formatMessage(event.message)}`,
     );
 
-    if (event.isSelf) {
-      return;
-    }
-
     const words = event.message.split(/\s+/);
     const commandString = words.find((word) => COMMANDS[word]);
     const permissions =
@@ -69,7 +65,7 @@ export async function connect(): Promise<void> {
       return;
     }
 
-    const response = await command.response();
+    const response = await command.response({ permissions });
 
     if (response) {
       await sendMessage(response);

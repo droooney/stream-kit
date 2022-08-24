@@ -14,4 +14,8 @@ export const wsServer = new Server(server);
 
 export const rootNs = new WebSocketNamespace<LocalClientEvents, LocalServerEvents>(wsServer.of('/'));
 
-export const wsClient: Socket<RemoteServerEvents, RemoteClientEvents> = io(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`);
+export const wsClient: Socket<RemoteServerEvents, RemoteClientEvents> = io(`http://${SERVER_HOSTNAME}:${SERVER_PORT}`, {
+  extraHeaders: {
+    'auth-token': process.env.CLIENT_SECRET ?? '',
+  },
+});

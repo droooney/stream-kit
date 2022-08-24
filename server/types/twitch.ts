@@ -2,7 +2,7 @@ import { MaybePromise } from '../../types';
 
 export interface Command {
   permissions: PermissionsType;
-  response: () => MaybePromise<string | null | undefined>;
+  response: (options: CommandOptions) => MaybePromise<string | null | undefined>;
 }
 
 export enum PermissionsType {
@@ -13,4 +13,8 @@ export enum PermissionsType {
 
 export interface Variables {
   deaths: number;
+}
+
+export interface CommandOptions {
+  permissions: PermissionsType;
 }

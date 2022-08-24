@@ -6,9 +6,12 @@ import { getVariable, setVariable } from './variables';
 export const COMMANDS: Partial<Record<string, Command>> = {
   '!commands': {
     permissions: PermissionsType.ANY,
-    response: () => {
-      const commands = Object.keys(COMMANDS)
-        .filter((command) => command !== '!commands')
+    response: ({ permissions }) => {
+      const commands = Object.entries(COMMANDS)
+        .filter(
+          ([commandString, command]) => commandString !== '!commands' && command && permissions >= command.permissions,
+        )
+        .map(([commandString]) => commandString)
         .sort()
         .join(', ');
 
@@ -21,18 +24,26 @@ export const COMMANDS: Partial<Record<string, Command>> = {
   },
   '!adddeath': {
     permissions: PermissionsType.MODERATOR,
-    response: async () => {
+    response: async (options) => {
       await setVariable('deaths', getVariable('deaths') + 1);
 
-      return COMMANDS['!deaths']?.response();
+      const response = await COMMANDS['!deaths']?.response(options);
+
+      if (response) {
+        return `Death added. ${response}`;
+      }
     },
   },
   '!removedeath': {
     permissions: PermissionsType.MODERATOR,
-    response: async () => {
+    response: async (options) => {
       await setVariable('deaths', Math.max(0, getVariable('deaths') - 1));
 
-      return COMMANDS['!deaths']?.response();
+      const response = await COMMANDS['!deaths']?.response(options);
+
+      if (response) {
+        return `Death removed. ${response}`;
+      }
     },
   },
   '!mods': {
