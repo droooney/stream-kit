@@ -3,12 +3,15 @@ window.addEventListener('message', ({ data, origin }) => {
     case 'getCurrentSong': {
       const titleElement = document.querySelector('.player-controls .track__title');
       const artistElement = document.querySelector('.player-controls .track__artists');
+      const versionElement = document.querySelector('.player-controls .track__ver');
 
       if (titleElement && artistElement) {
         window.opener.postMessage(
           JSON.stringify({
             type: 'getCurrentSong',
-            value: `${artistElement.textContent} - ${titleElement.textContent}`,
+            value: `${artistElement.textContent} — ${titleElement.textContent}${
+              versionElement ? ` (${versionElement.textContent})` : ''
+            }`,
           }),
           origin,
         );
