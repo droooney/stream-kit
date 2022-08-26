@@ -43,7 +43,7 @@ end
 function stopBossMusic(bossName)
   playingMusic = false
 
-  GLOBAL.TheSim:QueryServer(apiPath .. "/api/endBoss?bossName=" .. bossName, function () end, "POST", "{}")
+  GLOBAL.TheSim:QueryServer(apiPath .. "/endBoss?bossName=" .. bossName, function () end, "POST", "{}")
   GLOBAL.TheMixer:SetLevel("set_music", 0)
 end
 
