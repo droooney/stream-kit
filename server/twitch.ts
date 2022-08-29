@@ -2,6 +2,8 @@ import TwitchJs from 'twitch-js';
 import colors from 'colors';
 import dayjs from 'dayjs';
 
+import { BLACKLIST } from './constants/blacklist';
+
 import { PermissionsType } from './types/twitch';
 
 import { COMMANDS } from './commands';
@@ -34,14 +36,26 @@ export async function connect(): Promise<void> {
   })());
 
   chat.on('JOIN', (event) => {
+    if (isBlacklisted(event.username)) {
+      return;
+    }
+
     console.log(`${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} joined the chat`);
   });
 
   chat.on('PART', (event) => {
+    if (isBlacklisted(event.username)) {
+      return;
+    }
+
     console.log(`${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} left the chat`);
   });
 
   chat.on('PRIVMSG', async (event) => {
+    if (isBlacklisted(event.username)) {
+      return;
+    }
+
     console.log(
       `${formatTimestamp(event.timestamp)}: ${formatUsername(event.username)} wrote ${formatMessage(event.message)}`,
     );
@@ -91,4 +105,8 @@ function formatUsername(username: string): string {
 
 function formatMessage(message: string): string {
   return colors.bold(colors.blue(message));
+}
+
+function isBlacklisted(username: string): boolean {
+  return BLACKLIST.has(username);
 }

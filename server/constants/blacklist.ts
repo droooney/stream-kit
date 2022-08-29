@@ -1,0 +1,18 @@
+export const BLACKLIST: Set<string> = new Set([
+  '0_supa',
+  '0ax2',
+  '420f1tc00l',
+  'Alexisthenexis',
+  'Alienconglomeration',
+  'Aliengathering',
+  'Anna_banana_10',
+  'Anotherttvviewer',
+  'Audycia',
+  'Commanderroot',
+  'Flatearthchannel',
+  'Iizzybeth',
+  'Rogueg1rl',
+  'Sophiafox21',
+  'Trewdalbert',
+  'Violets_tv',
+]);
