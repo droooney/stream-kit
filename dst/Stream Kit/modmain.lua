@@ -5,6 +5,7 @@ local bosses = {
   "antlion",
   "beequeen",
   "crabking",
+  "daywalker",
   "dragonfly",
   "eyeofterror",
   "klaus",
@@ -71,8 +72,6 @@ end)
 
 AddPrefabPostInit("player_classified", function (inst)
   local wasDead = inst.isghostmode:value()
-
-  print("init dead", wasDead)
 
   inst:ListenForEvent("isghostmodedirty", function ()
     local isDead = inst.isghostmode:value()
